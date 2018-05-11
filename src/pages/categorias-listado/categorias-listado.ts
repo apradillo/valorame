@@ -201,6 +201,7 @@ export class CategoriasListadoPage {
     this.alertService.showConfirm('¿Desea eliminar esta categoría?', 'Eliminar categoría')
       .then(data => {
         if (data == 'yes') {
+          
           this.deleteCategoria(categoria);
         }
       });

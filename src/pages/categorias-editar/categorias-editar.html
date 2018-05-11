@@ -1,0 +1,44 @@
+<!--
+  Generated template for the CategoriasEditarPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{titulo}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="categoriaForm">
+    <div *ngIf="ready">
+      <ion-item>
+        <ion-label stacked>Categoría</ion-label>
+        <ion-input type="text" formControlName="nombreCategoria" [(ngModel)]="categoria.nombreCategoria"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!categoriaForm.controls.nombreCategoria.valid  && (categoriaForm.controls.nombreCategoria.dirty || submitAttempt)">
+        <p class="message-error">Introduzca un nombre de categoría válido.</p>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer *ngIf="ready" no-padding no-margin>
+  <ion-buttons no-padding no-margin>
+    <ion-row no-padding no-margin>
+      <ion-col col-6 no-padding no-margin >
+        <button ion-button icon-only color="primary" no-padding no-margin full (click)="cancelEditing()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-6 no-padding no-margin>
+        <button ion-button icon-only color="secondary" no-margin full (click)="save()">
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-buttons>

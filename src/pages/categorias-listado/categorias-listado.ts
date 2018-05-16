@@ -101,15 +101,15 @@ export class CategoriasListadoPage {
       this.alertService.showLoading()
       .then(() => {
         return new Promise<any>((resolve, reject) => {
-          this.api.getCategorias(this.filtro_busqueda)
+          this.api.getCategorias(this.filtro_busqueda, this.start, this.limit)
             .then(data => {
               if (limpiarLista) {
                 this.categorias = [];
                 this.total = 0;
               }
               this.searching = false;
-              this.categorias = this.categorias.concat(data);
-              this.total = data.length;
+              this.categorias = this.categorias.concat(data.items);
+              this.total = data.total;
               if (infiniteScroll != undefined && infiniteScroll != null) {
                 infiniteScroll.complete();
               }
@@ -145,8 +145,8 @@ export class CategoriasListadoPage {
               this.total = 0;
             }
             this.searching = false;
-            this.categorias = this.categorias.concat(data);
-            this.total = data.length;
+            this.categorias = this.categorias.concat(data.items);
+            this.total = data.total;
             if (infiniteScroll != undefined && infiniteScroll != null) {
               infiniteScroll.complete();
             }

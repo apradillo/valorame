@@ -28,6 +28,7 @@ import { ElementosDetallePage } from '../pages/elementos-detalle/elementos-detal
 import { ElementosEditarPage } from '../pages/elementos-editar/elementos-editar';
 import { ValoracionesDetallePage } from '../pages/valoraciones-detalle/valoraciones-detalle';
 import { ValoracionesEditarPage } from '../pages/valoraciones-editar/valoraciones-editar';
+import { ImagesService } from '../providers/image';
 
 
 
@@ -81,6 +82,7 @@ import { ValoracionesEditarPage } from '../pages/valoraciones-editar/valoracione
     ApiService,
     ConfigService,
     LocalStorageService,
+    ImagesService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

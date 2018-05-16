@@ -8,25 +8,32 @@ import { ComboModel } from "../models/combo";
 import { CategoriaModel } from "../models/categoria";
 import { ElementoModel } from "../models/elemento";
 import { ValoracionModel } from "../models/valoracion";
+import { UtilsService } from "./utils";
 
 @Injectable()
 export class ApiService {
    data: any;
-   localStorage: LocalStorageService;
 
-   constructor(LocalStorage: LocalStorageService) {
+   constructor(public localStorage: LocalStorageService,
+               public utilService: UtilsService) {
       this.data = null;
-      this.localStorage = LocalStorage;
    }
 
-   getCategorias(_busqueda?: string): Promise<CategoriaModel[]> {
-      return new Promise<CategoriaModel[]>((resolve, reject) => {
+   getCategorias(_busqueda?: string, start?: number, limit?: number): Promise<PagingModel<CategoriaModel>> {
+    return new Promise<PagingModel<CategoriaModel>>((resolve, reject) => {
           this.localStorage.get("categorias")
          .then((data) => {
             let result: any = data;
             if (_busqueda != undefined && _busqueda != null && _busqueda.trim().length > 0) {
                result = result.filter(f => f.nombreCategoria.indexOf(_busqueda)>0);
-            }     
+            }
+            let total = result.length;
+            if (start == undefined || start == null) {
+                start = 0;
+            }
+            if (limit == undefined || limit == null) {
+                limit = total;
+            }
             let returnCollection: CategoriaModel[] = new Array();
             for (let i = 0; i < result.length; ++i) {
                let item: any = result[i];
@@ -35,7 +42,7 @@ export class ApiService {
                   item["nombreCategoria"]
                ))
             }
-            resolve(returnCollection);
+            resolve(new PagingModel<CategoriaModel>(this.utilService.paginate(returnCollection, limit, start), total));
          })
          .catch((err) => {
             reject(err);
@@ -69,18 +76,18 @@ export class ApiService {
 
    saveCategoria(_categoria: CategoriaModel): Promise<CategoriaModel> {
       return new Promise<CategoriaModel>((resolve, reject) => {
-         let currentData: CategoriaModel[];
+         let currentData: PagingModel<CategoriaModel>;
          this.getCategorias()
          .then((data) => {
             currentData = data;
             if (_categoria.id < 0) {
                 let id: number = 1;
-                if (currentData != undefined && currentData != null && currentData.length > 0) {
-                    id = currentData.length + 1;
+                if (currentData != undefined && currentData != null && currentData.items.length > 0) {
+                    id = currentData.items.length + 1;
                  }
                  _categoria.id = id;
             }
-            currentData.push(_categoria);
+            currentData.items.push(_categoria);
             this.localStorage.set("categorias", currentData)
             .then((data) => {
                 if (data) {
@@ -108,15 +115,15 @@ export class ApiService {
 
    deleteCategoria(_categoria: CategoriaModel): Promise<boolean> {
       return new Promise<boolean>((resolve, reject) => {
-         let currentData: CategoriaModel[];
+         let currentData: PagingModel<CategoriaModel>;
          this.getCategorias()
          .then((data) => {
              debugger;
             currentData = data;
-            for (let i = 0; i < currentData.length; ++i) {
+            for (let i = 0; i < currentData.items.length; ++i) {
                let item: CategoriaModel = currentData[i];
                if (item.id == _categoria.id) {
-                  currentData.splice(i, 1);
+                  currentData.items.splice(i, 1);
                }
             }
             this.localStorage.set("categorias", currentData)
@@ -137,8 +144,8 @@ export class ApiService {
       });
    }
 
-   getElementos(_categoriaId?: number , _busqueda?: string ): Promise<ElementoModel[]> {
-      return new Promise<ElementoModel[]>((resolve, reject) => {
+   getElementos( _categoriaId?: number , _busqueda?: string, start?: number, limit?: number ): Promise<PagingModel<ElementoModel>> {
+      return new Promise<PagingModel<ElementoModel>>((resolve, reject) => {
          this.localStorage.get("elementos")
          .then((data) => {
             let result: any = data;
@@ -148,16 +155,24 @@ export class ApiService {
             if (_busqueda != undefined && _busqueda != null && _busqueda.trim().length > 0) {
                result = result.filter(f => f.nombreCategoria.indexOf(_busqueda)>0);
             }
+            let total = result.length;
+            if (start == undefined || start == null) {
+                start = 0;
+            }
+            if (limit == undefined || limit == null) {
+                limit = total;
+            }
             let returnCollection: ElementoModel[] = new Array();
             for (let i = 0; i < result.length; ++i) {
                let item: any = result[i];
                returnCollection.push(new ElementoModel(
                   item["id"],
                   item["categoriaId"],
-                  item["nombreElemento"]
+                  item["nombreElemento"],
+                  item["imagen"]
                ));
             }
-            resolve(returnCollection);
+            resolve(new PagingModel<ElementoModel>(this.utilService.paginate(returnCollection, limit, start), total));
          })
          .catch((err) => {
             reject(err);
@@ -170,6 +185,7 @@ export class ApiService {
          this.localStorage.get("elementos")
          .then((data) => {
             let result: any = data;
+            debugger;
             if (_elementoId != undefined && _elementoId != null && _elementoId > 0) {
                result = result.filter(f => f.id = _elementoId);
             } 
@@ -179,7 +195,8 @@ export class ApiService {
                returnItem = new ElementoModel(
                   item["id"],
                   item["categoriaId"],
-                  item["nombreElemento"]
+                  item["nombreElemento"],
+                  item["imagen"]
                )
             }
             resolve(returnItem);
@@ -192,19 +209,20 @@ export class ApiService {
 
    saveElemento(_elemento: ElementoModel): Promise<ElementoModel> {
       return new Promise<ElementoModel>((resolve, reject) => {
-         let currentData: ElementoModel[];
+         let currentData: PagingModel<ElementoModel>;
+         debugger;
          let id: number = 1;
          this.getElementos()
          .then((data) => {
             currentData = data;
             if (_elemento.id < 0) {
                 let id: number = 1;
-                if (currentData != undefined && currentData != null && currentData.length > 0) {
-                    id = currentData.length + 1;
+                if (currentData != undefined && currentData != null && currentData.items.length > 0) {
+                    id = currentData.items.length + 1;
                  }
                  _elemento.id = id;
             }
-            currentData.push(_elemento);
+            currentData.items.push(_elemento);
             this.localStorage.set("elementos", currentData)
             .then((data) => {
                if (data) {
@@ -231,14 +249,14 @@ export class ApiService {
 
    deleteElemento(_elemento: ElementoModel): Promise<boolean> {
       return new Promise<boolean>((resolve, reject) => {
-         let currentData: ElementoModel[];
+         let currentData: PagingModel<ElementoModel>;
          this.getElementos()
          .then((data) => {
             currentData = data;
-            for (let i = 0; i < currentData.length; ++i) {
+            for (let i = 0; i < currentData.items.length; ++i) {
                let item: ElementoModel = currentData[i];
                if (item.id == _elemento.id) {
-                  currentData.splice(i, 1);
+                  currentData.items.splice(i, 1);
                }
             }
             this.localStorage.set("elementos", currentData)
@@ -259,8 +277,8 @@ export class ApiService {
       });
    }
 
-   getValoraciones(_categoriaId?: number, _elementoId?: number): Promise<ValoracionModel[]> {
-      return new Promise<ValoracionModel[]>((resolve, reject) => {
+   getValoraciones(_categoriaId?: number, _elementoId?: number, start?: number, limit?: number): Promise<PagingModel<ValoracionModel>> {
+      return new Promise<PagingModel<ValoracionModel>>((resolve, reject) => {
          this.localStorage.get("valoraciones")
          .then((data) => {
             let result: any = data;
@@ -270,6 +288,13 @@ export class ApiService {
             if (_elementoId != undefined && _elementoId != null && _elementoId > 0) {
                result = result.filter(f => f.elementoId = _elementoId);
             } 
+            let total = result.length;
+            if (start == undefined || start == null) {
+                start = 0;
+            }
+            if (limit == undefined || limit == null) {
+                limit = total;
+            }
             let returnCollection: ValoracionModel[] = new Array();
             for (let i = 0; i < result.length; ++i) {
                let item: any = result[i];
@@ -282,7 +307,7 @@ export class ApiService {
                   item["imagen"]
                ))
             }
-            resolve(returnCollection);
+            resolve(new PagingModel<ValoracionModel>(this.utilService.paginate(returnCollection, limit, start), total));
          })
          .catch((err) => {
             reject(err);
@@ -320,19 +345,19 @@ export class ApiService {
 
    saveValoracion(_valoracion: ValoracionModel): Promise<ValoracionModel> {
       return new Promise<ValoracionModel>((resolve, reject) => {
-         let currentData: ValoracionModel[];
+         let currentData: PagingModel<ValoracionModel>;
          let id: number = 1;
          this.getValoraciones()
          .then((data) => {
             currentData = data;
             if (_valoracion.id < 0) {
                 let id: number = 1;
-                if (currentData != undefined && currentData != null && currentData.length > 0) {
-                    id = currentData.length + 1;
+                if (currentData != undefined && currentData != null && currentData.items.length > 0) {
+                    id = currentData.items.length + 1;
                  }
                  _valoracion.id = id;
             }
-            currentData.push(_valoracion);
+            currentData.items.push(_valoracion);
             this.localStorage.set("valoraciones", currentData)
             .then((data) => {
                if (data) {
@@ -359,14 +384,14 @@ export class ApiService {
 
    deleteValoracion(_valoracion: ValoracionModel): Promise<boolean> {
       return new Promise<boolean>((resolve, reject) => {
-         let currentData: ValoracionModel[];
+         let currentData: PagingModel<ValoracionModel>;
          this.getValoraciones()
          .then((data) => {
             currentData = data;
-            for (let i = 0; i < currentData.length; ++i) {
+            for (let i = 0; i < currentData.items.length; ++i) {
                let item: ValoracionModel = currentData[i];
                if (item.id == _valoracion.id) {
-                  currentData.splice(i, 1);
+                  currentData.items.splice(i, 1);
                }
             }
             this.localStorage.set("valoraciones", currentData)

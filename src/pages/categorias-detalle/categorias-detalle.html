@@ -10,7 +10,7 @@
     <ion-title>{{titulo}}</ion-title>
 
     <ion-buttons end>
-      <button icon-only right ion-button (click)="addCategoria()">
+      <button icon-only right ion-button (click)="addElemento()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -31,9 +31,9 @@
     </div>
 
 
-    <div class="boxNoResults" *ngIf="ready && !searching && categorias.length == 0">
+    <div class="boxNoResults" *ngIf="ready && !searching && elementos.length == 0">
         <ion-icon name="alert-outline"></ion-icon>
-        <br/> No se han encontrado categorías
+        <br/> No se han encontrado elementos
       </div>
 
       <ion-list>

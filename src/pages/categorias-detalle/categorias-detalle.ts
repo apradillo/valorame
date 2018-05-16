@@ -106,15 +106,15 @@ getElementos(limpiarLista: boolean, showLoading: boolean, infiniteScroll?: any):
     this.alertService.showLoading()
     .then(() => {
       return new Promise<any>((resolve, reject) => {
-        this.api.getElementos(this.categoria.id, this.filtro_busqueda)
+        this.api.getElementos(this.categoria.id, this.filtro_busqueda, this.start, this.limit)
           .then(data => {
             if (limpiarLista) {
               this.elementos = [];
               this.total = 0;
             }
             this.searching = false;
-            this.elementos = this.elementos.concat(data);
-            this.total = data.length;
+            this.elementos = this.elementos.concat(data.items);
+            this.total = data.total;
             if (infiniteScroll != undefined && infiniteScroll != null) {
               infiniteScroll.complete();
             }
@@ -143,15 +143,15 @@ getElementos(limpiarLista: boolean, showLoading: boolean, infiniteScroll?: any):
     })
   } else {
     return new Promise<any>((resolve, reject) => {
-      this.api.getElementos(this.categoria.id, this.filtro_busqueda)
+      this.api.getElementos(this.categoria.id, this.filtro_busqueda, this.start, this.limit)
         .then(data => {
           if (limpiarLista) {
             this.elementos = [];
             this.total = 0;
           }
           this.searching = false;
-          this.elementos = this.elementos.concat(data);
-          this.total = data.length;
+          this.elementos = this.elementos.concat(data.items);
+          this.total = data.total;
           if (infiniteScroll != undefined && infiniteScroll != null) {
             infiniteScroll.complete();
           }
@@ -191,13 +191,10 @@ openElemento(elemento: ElementoModel) {
 }
 
 addElemento() {
-  let elemento = new ElementoModel(-1, this.categoria.id, '');
-  this.modalService.showModal(ElementosEditarPage, false, [elemento], 'one-field')
-    .then((saved: boolean) => {
-      if (saved) {
-        this.getElementos(true, true);
-      }
-    });
+  let elemento = new ElementoModel(-1, this.categoria.id, '', '');
+  this.navCtrl.push(ElementosEditarPage, {
+    elemento: elemento
+  });
 }
 
 confirmDeleteElemento(elemento: ElementoModel) {

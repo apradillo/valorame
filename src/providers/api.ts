@@ -155,7 +155,7 @@ export class ApiService {
                   item["id"],
                   item["categoriaId"],
                   item["nombreElemento"]
-               ))
+               ));
             }
             resolve(returnCollection);
          })
@@ -197,12 +197,13 @@ export class ApiService {
          this.getElementos()
          .then((data) => {
             currentData = data;
-            if (currentData != undefined && currentData != null && currentData.length > 0) {
-               id = currentData.length + 1;
-            } else {
-               id = 1;  
+            if (_elemento.id < 0) {
+                let id: number = 1;
+                if (currentData != undefined && currentData != null && currentData.length > 0) {
+                    id = currentData.length + 1;
+                 }
+                 _elemento.id = id;
             }
-            _elemento.id = id;
             currentData.push(_elemento);
             this.localStorage.set("elementos", currentData)
             .then((data) => {
@@ -228,7 +229,7 @@ export class ApiService {
       });
    }
 
-   deleteElementos(_elemento: ElementoModel): Promise<boolean> {
+   deleteElemento(_elemento: ElementoModel): Promise<boolean> {
       return new Promise<boolean>((resolve, reject) => {
          let currentData: ElementoModel[];
          this.getElementos()
@@ -324,12 +325,13 @@ export class ApiService {
          this.getValoraciones()
          .then((data) => {
             currentData = data;
-            if (currentData != undefined && currentData != null && currentData.length > 0) {
-               id = currentData.length + 1;
-            } else {
-               id = 1;  
+            if (_valoracion.id < 0) {
+                let id: number = 1;
+                if (currentData != undefined && currentData != null && currentData.length > 0) {
+                    id = currentData.length + 1;
+                 }
+                 _valoracion.id = id;
             }
-            _valoracion.id = id;
             currentData.push(_valoracion);
             this.localStorage.set("valoraciones", currentData)
             .then((data) => {

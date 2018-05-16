@@ -201,7 +201,6 @@ export class CategoriasListadoPage {
     this.alertService.showConfirm('¿Desea eliminar esta categoría?', 'Eliminar categoría')
       .then(data => {
         if (data == 'yes') {
-          
           this.deleteCategoria(categoria);
         }
       });
@@ -211,7 +210,7 @@ export class CategoriasListadoPage {
     this.api.deleteCategoria(categoria)
       .then((data) => {
         debugger;
-        this.alertService.showToast('Categroría eliminado correctamente');
+        this.alertService.showToast('Categoría eliminada correctamente');
         this.getCategorias(true, true);
       }, (error) => {
         this.alertService.showToast(error);

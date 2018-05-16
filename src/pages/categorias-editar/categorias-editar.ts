@@ -63,13 +63,12 @@ export class CategoriasEditarPage {
 
   save() {
     this.submitAttempt = true;
+    let bAlta: boolean = (this.categoria.id > 0 ? false : true);
     if (this.categoriaForm.valid) {
       this.alertService.showLoading('Guardando...')
         .then(() => {
-          let bAlta: boolean = (this.categoria.id > 0 ? false : true);
           this.api.saveCategoria(this.categoria)
             .then((data) => {
-              debugger;
               this.categoria = data;
               this.alertService.hideLoading();
               let msg: string = "";
@@ -79,14 +78,9 @@ export class CategoriasEditarPage {
                 msg = "Categoría modificada.";
               }
               this.alertService.showToast(msg);
-              return new Promise((resolve, reject) => {
-                if (this.viewCtrl != undefined) {
-                  this.viewCtrl.dismiss()
-                    .then(() => {
-                      debugger;
-                      resolve(true);
-                    });
-                }
+              if (this.viewCtrl != undefined) {
+                this.viewCtrl.dismiss(true);
+              } 
               });
             }).catch(err => {
               this.alertService.hideLoading();
@@ -98,9 +92,8 @@ export class CategoriasEditarPage {
               }
               this.alertService.showToast(msg + "\n" + err);
             });
-        })
+        }
     }
-  }
 
   cancelEditing() {
     this.submitAttempt = false;

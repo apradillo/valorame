@@ -10,8 +10,8 @@
     <ion-title>{{titulo}}</ion-title>
 
     <ion-buttons end>
-      <button icon-only right ion-button (click)="addElemento()">
-        <ion-icon name="add"></ion-icon>
+      <button right ion-button (click)="addElemento()">
+        <ion-icon name="add"></ion-icon> Nuevo elemento
       </button>
     </ion-buttons>
 
@@ -59,8 +59,8 @@
       </ion-item>
 
       <ion-item-options side="right">
-        <button color="danger" ion-button icon-only (click)="confirmDeleteElemento(elemento)">
-          <ion-icon name="trash"></ion-icon>
+        <button color="danger" ion-button (click)="confirmDeleteElemento(elemento)">
+          <ion-icon name="trash"></ion-icon> Eliminar elemento
         </button>
 
       </ion-item-options>

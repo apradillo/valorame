@@ -13,8 +13,8 @@
     </button>
 
     <ion-buttons end>
-      <button icon-only right ion-button (click)="addCategoria()">
-        <ion-icon name="add"></ion-icon>
+      <button right ion-button (click)="addCategoria()">
+        <ion-icon name="add"></ion-icon> Nueva categoría
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -45,8 +45,8 @@
       </ion-item>
 
       <ion-item-options side="right">
-        <button color="danger" ion-button icon-only (click)="confirmDeleteCategoria(categoria)">
-          <ion-icon name="trash"></ion-icon>
+        <button color="danger" ion-button (click)="confirmDeleteCategoria(categoria)">
+          <ion-icon name="trash"></ion-icon> Eliminar
         </button>
 
       </ion-item-options>

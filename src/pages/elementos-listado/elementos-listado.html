@@ -13,8 +13,8 @@
     </button>
 
     <ion-buttons end>
-      <button icon-only right ion-button (click)="addElemento()">
-        <ion-icon name="add"></ion-icon>
+      <button  right ion-button (click)="addElemento()">
+        <ion-icon name="add"></ion-icon> Nuevo elemento
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -25,7 +25,7 @@
 <ion-content padding>
 
   <ion-searchbar class="mb10" #searchbar mode="md" (ionInput)="buscarElementos($event)" (keypress)="eventHandler($event.keyCode)"
-    [showCancelButton]="true" placeholder="Categoría" clearInput>
+    [showCancelButton]="true" placeholder="Elemento" clearInput>
   </ion-searchbar>
 
   <div *ngIf="searching" class="spinner-container">
@@ -46,22 +46,32 @@
         </ion-avatar>
         <h2 item-left>{{elemento.nombreElemento}}</h2>
         <p item-right>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 0" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 1" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 2" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 3" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 4" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 5" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 6" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 7" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 8" name="star"></ion-icon>
-          <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 9" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 0" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 1" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 1" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 2" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 2" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 3" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 3" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 4" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 4" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 5" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 5" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 6" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 6" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 7" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 7" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 8" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 8" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion > 9" name="star"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 9" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="elemento.valoracion != null && elemento.valoracion <= 10" name="star-outline"></ion-icon>
         </p>
       </ion-item>
 
       <ion-item-options side="right">
-        <button color="danger" ion-button icon-only (click)="confirmDeleteElemento(elemento)">
-          <ion-icon name="trash"></ion-icon>
+        <button color="danger" ion-button (click)="confirmDeleteElemento(elemento)">
+          <ion-icon name="trash"></ion-icon> Eliminar
         </button>
 
       </ion-item-options>

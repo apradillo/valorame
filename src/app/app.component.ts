@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { AlertService } from '../providers/alert';
 import { ConfigService } from '../providers/config';
 import { CategoriasListadoPage } from '../pages/categorias-listado/categorias-listado';
+import { ElementosListadoPage } from '../pages/elementos-listado/elementos-listado';
 @Component({
   templateUrl: 'app.html'
 })
@@ -28,7 +29,7 @@ export class MyApp {
     this.pages = [
       {
         title: 'Inicio',
-        icon: 'home-outline',
+        icon: 'home',
         active: true,
         component: HomePage,
         visible: true,
@@ -37,10 +38,28 @@ export class MyApp {
       },
       {
         title: 'Categorías',
-        icon: 'folder-outline',
+        icon: 'folder',
         active: true,
         component: CategoriasListadoPage,
         visible: true,
+        params: { startSearching: true },
+        root: true
+      },
+      {
+        title: 'Elementos',
+        icon: 'paper',
+        active: true,
+        component: ElementosListadoPage,
+        visible: true,
+        params: { startSearching: true },
+        root: true
+      },
+      {
+        title: 'Ranking',
+        icon: 'paper',
+        active: false,
+        component: null,
+        visible: false,
         params: { startSearching: true },
         root: true
       }
@@ -66,8 +85,8 @@ export class MyApp {
   }
 
   openPage(page) {
-    if (page.active) {
-      if (page.visible) {
+    if (page.visible) {
+      if (page.active) {
         this.menu.close();
         if (page.root) {
           this.nav.setRoot(page.component, page.params);
@@ -75,10 +94,8 @@ export class MyApp {
           this.nav.push(page.component, page.params);
         }
       } else {
-        this.alertService.showToast('No tiene permiso de acceso');
+        this.alertService.showToast('Próximamente');
       }
-    } else {
-      this.alertService.showToast('Próximamente');
     }
   }
 

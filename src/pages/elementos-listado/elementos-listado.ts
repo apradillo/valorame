@@ -1,27 +1,26 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { CategoriaModel } from '../../models/categoria';
+import { ElementoValoracionModel } from '../../models/elementoValoracion';
 import { ApiService } from '../../providers/api';
 import { UtilsService } from '../../providers/utils';
 import { AlertService } from '../../providers/alert';
-import { CategoriasDetallePage } from '../categorias-detalle/categorias-detalle';
-import { CategoriasEditarPage } from '../categorias-editar/categorias-editar';
+import { ElementosEditarPage } from '../elementos-editar/elementos-editar';
 import { ModalService } from '../../providers/modal';
 
 /**
- * Generated class for the CategoriasListadoPage page.
+ * Generated class for the ElementosListadoPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @Component({
-  selector: 'page-categorias-listado',
-  templateUrl: 'categorias-listado.html',
+  selector: 'page-elementos-listado',
+  templateUrl: 'elementos-listado.html',
 })
-export class CategoriasListadoPage {
+export class ElementosListadoPage {
 
-  categorias: CategoriaModel[];
+  elementos: ElementoValoracionModel[];
   start: number;
   limit: number;
   total: number;
@@ -37,11 +36,11 @@ export class CategoriasListadoPage {
     public modalService: ModalService,
     public alertService: AlertService) {
 
-    this.start = 0;
+      this.start = 0;
     this.limit = 20;
     this.total = 0;
     this.filtro_busqueda = '';
-    this.categorias = [];
+    this.elementos = [];
     this.searching = false;
     this.ready = false;
 
@@ -61,7 +60,7 @@ export class CategoriasListadoPage {
     if (this.startSearching) {
       this.alertService.showLoading()
         .then(() => {
-          this.getCategorias(true, false)
+          this.getElementos(true, false)
             .then(() => {
               this.alertService.hideLoading();
               this.ready = true;
@@ -78,20 +77,20 @@ export class CategoriasListadoPage {
     }
   }
 
-  buscarCategorias(ev) {
+  buscarElementos(ev) {
     this.filtro_busqueda = ev.target.value || "";
     if (this.filtro_busqueda.length > 2) {
-      this.categorias = [];
+      this.elementos = [];
       this.searching = true;
-      this.getCategorias(true, false);
+      this.getElementos(true, false);
     } else {
       this.searching = false;
-      this.categorias = [];
+      this.elementos = [];
       this.total = 0;
     }
   }
 
-  getCategorias(limpiarLista: boolean, showLoading: boolean, infiniteScroll?: any): Promise<any> {
+  getElementos(limpiarLista: boolean, showLoading: boolean, infiniteScroll?: any): Promise<any> {
 
     if (limpiarLista) {
       this.start = 0;
@@ -101,15 +100,15 @@ export class CategoriasListadoPage {
       this.alertService.showLoading()
       .then(() => {
         return new Promise<any>((resolve, reject) => {
-          this.api.getCategorias(this.filtro_busqueda, this.start, this.limit)
+          this.api.getElementos(-1, this.filtro_busqueda, this.start, this.limit)
             .then(data => {
               if (limpiarLista) {
-                this.categorias = [];
+                this.elementos = [];
                 this.total = 0;
               }
               this.searching = false;
               debugger;
-              this.categorias = this.categorias.concat(data.items);
+              this.elementos = this.elementos.concat(data.items);
               this.total = data.total;
               if (infiniteScroll != undefined && infiniteScroll != null) {
                 infiniteScroll.complete();
@@ -138,14 +137,14 @@ export class CategoriasListadoPage {
       })
     } else {
       return new Promise<any>((resolve, reject) => {
-        this.api.getCategorias(this.filtro_busqueda)
+        this.api.getElementos(-1, this.filtro_busqueda, this.start, this.limit)
           .then(data => {
             if (limpiarLista) {
-              this.categorias = [];
+              this.elementos = [];
               this.total = 0;
             }
             this.searching = false;
-            this.categorias = this.categorias.concat(data.items);
+            this.elementos = this.elementos.concat(data.items);
             this.total = data.total;
             if (infiniteScroll != undefined && infiniteScroll != null) {
               infiniteScroll.complete();
@@ -176,40 +175,36 @@ export class CategoriasListadoPage {
 
   doInfinite(infiniteScroll) {
     this.start += this.limit;
-    this.getCategorias(false, false, infiniteScroll);
+    this.getElementos(false, false, infiniteScroll);
   }
 
-  openCategoria(categoria: CategoriaModel) {
-    this.navCtrl.push(CategoriasDetallePage, {
-      categoria: categoria,
-      params: {startSearching: true}
+  openElemento(elemento: ElementoValoracionModel) {
+    this.navCtrl.push(ElementosEditarPage, {
+      elemento: elemento
     });
   }
 
-  addCategoria() {
-    let categoria = new CategoriaModel(-1, '', 0);
-    this.modalService.showModal(CategoriasEditarPage, false, [categoria], 'one-field')
-      .then((saved: boolean) => {
-        if (saved) {
-          this.getCategorias(true, true);
-        }
-      });
+  addElemento() {
+    let elemento = new ElementoValoracionModel(-1, -1, '', '', 0, '');
+    this.navCtrl.push(ElementosEditarPage, {
+      elemento: elemento
+    });
   }
 
-  confirmDeleteCategoria(categoria: CategoriaModel) {
-    this.alertService.showConfirm('¿Desea eliminar esta categoría?', 'Eliminar categoría')
+  confirmDeleteElemento(elemento: ElementoValoracionModel) {
+    this.alertService.showConfirm('¿Desea eliminar este elemento?', 'Eliminar elemento')
       .then(data => {
         if (data == 'yes') {
-          this.deleteCategoria(categoria);
+          this.deleteElemento(elemento);
         }
       });
   }
 
-  deleteCategoria(categoria: CategoriaModel) {
-    this.api.deleteCategoria(categoria)
+  deleteElemento(elemento: ElementoValoracionModel) {
+    this.api.deleteElemento(elemento)
       .then((data) => {
-        this.alertService.showToast('Categoría eliminada correctamente');
-        this.getCategorias(true, true);
+        this.alertService.showToast('Elemento eliminado correctamente');
+        this.getElementos(true, true);
       }, (error) => {
         this.alertService.showToast(error);
       })

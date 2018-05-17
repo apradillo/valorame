@@ -26,17 +26,18 @@ export class ConfigService {
     private checkConfig(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             let ok: boolean;
-            this.localStorage.get('categorias')
+            this.localStorage.get('valorame_categorias')
                 .then((data) => {
-                    this.localStorage.get('elementos')
+                    this.localStorage.get('valorame_elementos')
                         .then((data) => {
-                            this.localStorage.get('valoraciones')
-                                .then((data) => {
-                                    resolve(true);
-                                })
-                                .catch((err) => {
-                                    resolve(false);
-                                })
+                            resolve(true);
+                            // this.localStorage.get('valoraciones')
+                            //     .then((data) => {
+                            //         resolve(true);
+                            //     })
+                            //     .catch((err) => {
+                            //         resolve(false);
+                            //     })
                         })
                         .catch((err) => {
                             resolve(false);
@@ -50,9 +51,9 @@ export class ConfigService {
 
     private setConfig(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            this.localStorage.set('categorias', []);
-            this.localStorage.set('elementos', []);
-            this.localStorage.set('valoraciones', []);
+            this.localStorage.set('valorame_categorias', []);
+            this.localStorage.set('valorame_elementos', []);
+            // this.localStorage.set('valorame_valoraciones', []);
             resolve(true);
         });
     }

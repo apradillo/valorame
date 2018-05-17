@@ -18,18 +18,18 @@ import { AlertService } from '../providers/alert';
 import { ModalService } from '../providers/modal';
 import { UtilsService } from '../providers/utils';
 import { ConfigService } from '../providers/config';
+import { ImagesService } from '../providers/image';
+
+import { Ionic2RatingModule } from 'ionic2-rating';
 
 import { MyApp } from './app.component';
+
 import { HomePage } from '../pages/home/home';
 import { CategoriasListadoPage } from '../pages/categorias-listado/categorias-listado';
 import { CategoriasDetallePage } from '../pages/categorias-detalle/categorias-detalle';
 import { CategoriasEditarPage } from '../pages/categorias-editar/categorias-editar';
-import { ElementosDetallePage } from '../pages/elementos-detalle/elementos-detalle';
 import { ElementosEditarPage } from '../pages/elementos-editar/elementos-editar';
-import { ValoracionesDetallePage } from '../pages/valoraciones-detalle/valoraciones-detalle';
-import { ValoracionesEditarPage } from '../pages/valoraciones-editar/valoraciones-editar';
-import { ImagesService } from '../providers/image';
-
+import { ElementosListadoPage } from '../pages/elementos-listado/elementos-listado';
 
 
 @NgModule({
@@ -44,10 +44,8 @@ import { ImagesService } from '../providers/image';
     CategoriasListadoPage,
     CategoriasDetallePage,
     CategoriasEditarPage,
-    ElementosDetallePage,
-    ElementosEditarPage,
-    ValoracionesDetallePage,
-    ValoracionesEditarPage
+    ElementosListadoPage,
+    ElementosEditarPage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +57,8 @@ import { ImagesService } from '../providers/image';
           backButtonText: ""
         }
       }
-    })
+    }),
+    Ionic2RatingModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -68,10 +67,8 @@ import { ImagesService } from '../providers/image';
     CategoriasListadoPage,
     CategoriasDetallePage,
     CategoriasEditarPage,
-    ElementosDetallePage,
-    ElementosEditarPage,
-    ValoracionesDetallePage,
-    ValoracionesEditarPage
+    ElementosListadoPage,
+    ElementosEditarPage
   ],
   providers: [
     StatusBar,

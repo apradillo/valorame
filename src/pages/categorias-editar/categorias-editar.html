@@ -14,8 +14,8 @@
 
 
 <ion-content padding>
-  <form [formGroup]="categoriaForm">
-    <div *ngIf="ready">
+  <div *ngIf="ready">
+    <form [formGroup]="categoriaForm">
       <ion-item>
         <ion-label stacked>Categoría</ion-label>
         <ion-input type="text" formControlName="nombreCategoria" [(ngModel)]="categoria.nombreCategoria"></ion-input>
@@ -23,14 +23,14 @@
       <ion-item *ngIf="!categoriaForm.controls.nombreCategoria.valid  && (categoriaForm.controls.nombreCategoria.dirty || submitAttempt)">
         <p class="message-error">Introduzca un nombre de categoría válido.</p>
       </ion-item>
-    </div>
-  </form>
+    </form>
+  </div>
 </ion-content>
 
 <ion-footer *ngIf="ready" no-padding no-margin>
   <ion-buttons no-padding no-margin>
     <ion-row no-padding no-margin>
-      <ion-col col-6 no-padding no-margin >
+      <ion-col col-6 no-padding no-margin>
         <button ion-button icon-only color="primary" no-padding no-margin full (click)="cancelEditing()">
           <ion-icon name="close"></ion-icon>
         </button>
@@ -42,3 +42,4 @@
       </ion-col>
     </ion-row>
   </ion-buttons>
+

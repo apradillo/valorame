@@ -4,8 +4,7 @@ import { AlertService } from '../../providers/alert';
 import { ApiService } from '../../providers/api';
 import { ModalService } from '../../providers/modal';
 import { CategoriaModel } from '../../models/categoria';
-import { ElementoModel } from '../../models/elemento';
-import { ElementosDetallePage } from '../elementos-detalle/elementos-detalle';
+import { ElementoValoracionModel } from '../../models/elementoValoracion';
 import { ElementosEditarPage } from '../elementos-editar/elementos-editar';
 
 /**
@@ -25,7 +24,7 @@ export class CategoriasDetallePage {
   ready: boolean;
   titulo: string;
 
-  elementos: ElementoModel[];
+  elementos: ElementoValoracionModel[];
   start: number;
   limit: number;
   total: number;
@@ -50,8 +49,8 @@ export class CategoriasDetallePage {
       this.elementos = [];
       this.searching = false;
 
-      if (this.navParams != undefined && this.navParams.data.startSearching != null) {
-        this.startSearching = this.navParams.data.startSearching;
+      if (this.navParams != undefined && this.navParams.data.params != undefined && this.navParams.data.params.startSearching != null) {
+        this.startSearching = this.navParams.data.params.startSearching;
       } else {
         this.startSearching = false;
       }
@@ -131,7 +130,6 @@ getElementos(limpiarLista: boolean, showLoading: boolean, infiniteScroll?: any):
             reject();
           })
           .catch(err => {
-            debugger;
             this.alertService.hideLoading();
             if (infiniteScroll != undefined && infiniteScroll != null) {
               infiniteScroll.complete();
@@ -184,20 +182,20 @@ doInfinite(infiniteScroll) {
   this.getElementos(false, false, infiniteScroll);
 }
 
-openElemento(elemento: ElementoModel) {
-  this.navCtrl.push(ElementosDetallePage, {
-    elemento: elemento
-  });
-}
-
-addElemento() {
-  let elemento = new ElementoModel(-1, this.categoria.id, '', '');
+openElemento(elemento: ElementoValoracionModel) {
   this.navCtrl.push(ElementosEditarPage, {
     elemento: elemento
   });
 }
 
-confirmDeleteElemento(elemento: ElementoModel) {
+addElemento() {
+  let elemento = new ElementoValoracionModel(-1, this.categoria.id, '', '', 0, '');
+  this.navCtrl.push(ElementosEditarPage, {
+    elemento: elemento
+  });
+}
+
+confirmDeleteElemento(elemento: ElementoValoracionModel) {
   this.alertService.showConfirm('¿Desea eliminar este elemento?', 'Eliminar elemento')
     .then(data => {
       if (data == 'yes') {
@@ -206,17 +204,15 @@ confirmDeleteElemento(elemento: ElementoModel) {
     });
 }
 
-deleteElemento(elemento: ElementoModel) {
+deleteElemento(elemento: ElementoValoracionModel) {
   this.api.deleteElemento(elemento)
     .then((data) => {
-      debugger;
       this.alertService.showToast('Elemento eliminado correctamente');
       this.getElementos(true, true);
     }, (error) => {
       this.alertService.showToast(error);
     })
     .catch(err => {
-      debugger;
       this.alertService.showMessage('Error');
     })
 }

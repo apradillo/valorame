@@ -11,7 +11,7 @@
     </div>
     <ion-list>
         <div *ngFor="let p of pages; let i = index">
-            <ion-item menuClose ion-item (click)="openPage(p)" icon [class.menu-item-disabled]="!p.visible">
+            <ion-item *ngIf="p.active" menuClose ion-item (click)="openPage(p)" icon [class.menu-item-disabled]="!p.visible">
               <ion-icon name="{{p.icon}}" item-left [class.menu-item-disabled]="!p.visible"></ion-icon>
               {{p.title}}
             </ion-item>

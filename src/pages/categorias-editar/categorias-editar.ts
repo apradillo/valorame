@@ -35,14 +35,15 @@ export class CategoriasEditarPage {
     public alertService: AlertService,
     public formBuilder: FormBuilder) {
 
+    this.categoria = this.navParams.data.params[0];
+    
     this.ready = false;
     this.submitAttempt = false;
     this.categoriaForm = formBuilder.group({
       nombreCategoria: ['', Validators.compose([Validators.required])]
     });
 
-    this.categoria = this.navParams.data.params[0];
-    this.titulo = (this.categoria.id > 0 ? 'Editar categoría' : 'Nueva categoría');
+    this.titulo = (this.categoria.id > 0 ? this.categoria.nombreCategoria : 'Nueva categoría');
   }
 
   ionViewDidLoad() {

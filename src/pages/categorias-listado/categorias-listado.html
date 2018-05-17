@@ -40,9 +40,8 @@
   <ion-list>
     <ion-item-sliding *ngFor="let categoria of categorias; let i = index" class="fadeIn" [style.animationDelay]="(((i % limit) + 1) / 15).toString() + 's'">
       <ion-item (click)="openCategoria(categoria)">
-        <h2>
-          <h2>{{categoria.nombreCategoria}}</h2>
-        </h2>
+          <h2 item-left>{{categoria.nombreCategoria}}</h2>
+          <p item-right>{{categoria.numElementos}} elementos{{categoria.numElementos == 1 ? '' : 's'}}</p>
       </ion-item>
 
       <ion-item-options side="right">

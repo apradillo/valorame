@@ -1,11 +1,12 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { UtilsService } from '../../providers/utils';
-import { ElementoModel } from '../../models/elemento';
+import { ElementoValoracionModel } from '../../models/elementoValoracion';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertService } from '../../providers/alert';
 import { ApiService } from '../../providers/api';
 import { ImagesService } from '../../providers/image';
+import { CategoriaModel } from '../../models/categoria';
 
 /**
  * Generated class for the ElementosEditarPage page.
@@ -20,12 +21,15 @@ import { ImagesService } from '../../providers/image';
 })
 export class ElementosEditarPage {
 
-  elemento: ElementoModel;
+  elemento: ElementoValoracionModel;
+  categoriasList: CategoriaModel[];
   ready: boolean;
   elementoForm: FormGroup;
+  valoracionForm: FormGroup;
   submitAttempt: boolean;
   titulo: string;
   fileToUpload: File;
+  bAlta: boolean;
   @ViewChild('file') mapElement: ElementRef;
 
   constructor(public navCtrl: NavController,
@@ -38,13 +42,20 @@ export class ElementosEditarPage {
 
     this.ready = false;
     this.submitAttempt = false;
+    this.categoriasList = [];
 
     this.elementoForm = formBuilder.group({
+      categoriaSelect: ['', Validators.compose([Validators.required])],
       nombreElemento: ['', Validators.compose([Validators.required])]
     });
 
+    this.valoracionForm = formBuilder.group({
+      descripcionValoracion: ['', Validators.compose([Validators.required])]
+    });
+
     this.elemento = this.navParams.get('elemento');
-    this.titulo = (this.elemento.id > 0 ? 'Editar elemento' : 'Nuevo elemento');
+    this.titulo = (this.elemento.id > 0 ? this.elemento.nombreElemento : 'Nuevo elemento');
+    this.bAlta = (this.elemento.id > 0 ? false : true);
     this.fileToUpload = null;
   }
 
@@ -56,21 +67,25 @@ export class ElementosEditarPage {
     this.init();
   }
 
-  init() {
+  init(): void {
     this.alertService.showLoading()
       .then(() => {
-        this.ready = true;
-        this.alertService.hideLoading();
+        this.api.getCategorias()
+        .then((data) => {
+          this.categoriasList = data.items;
+          this.ready = true;
+          this.alertService.hideLoading();
+        })
+        
       });
   }
 
-  save() {
+  save(): void {
     this.submitAttempt = true;
     let bAlta: boolean = (this.elemento.id > 0 ? false : true);
     if (this.elementoForm.valid) {
       this.alertService.showLoading('Guardando...')
         .then(() => {
-          debugger;
           this.api.saveElemento(this.elemento)
             .then((data) => {
               this.elemento = data;
@@ -97,16 +112,16 @@ export class ElementosEditarPage {
     }
   }
 
-  cancelEditing() {
+  cancelEditing(): void {
     this.submitAttempt = false;
     this.navCtrl.pop();
   }
 
-  subirImagen() {
+  subirImagen(): void {
     document.getElementById("file").click();
   }
 
-  deleteImagen() {
+  deleteImagen(): void {
     this.elemento.imagen = '';
   }
 

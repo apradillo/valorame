@@ -1,5 +1,5 @@
 <!--
-  Generated template for the CategoriasDetallePage page.
+  Generated template for the ElementosListadoPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,14 +7,16 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{titulo}}</ion-title>
+    <ion-title>Elementos</ion-title>
+    <button left ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
 
     <ion-buttons end>
       <button icon-only right ion-button (click)="addElemento()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
-
   </ion-navbar>
 
 </ion-header>
@@ -23,13 +25,12 @@
 <ion-content padding>
 
   <ion-searchbar class="mb10" #searchbar mode="md" (ionInput)="buscarElementos($event)" (keypress)="eventHandler($event.keyCode)"
-    [showCancelButton]="true" placeholder="Elemento" clearInput>
+    [showCancelButton]="true" placeholder="Categoría" clearInput>
   </ion-searchbar>
 
   <div *ngIf="searching" class="spinner-container">
     <ion-spinner></ion-spinner>
   </div>
-
 
   <div class="boxNoResults" *ngIf="ready && !searching && elementos.length == 0">
     <ion-icon name="alert-outline"></ion-icon>

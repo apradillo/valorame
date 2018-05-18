@@ -29,7 +29,7 @@ export class ElementosEditarPage {
   submitAttempt: boolean;
   titulo: string;
   fileToUpload: File;
-  bAlta: boolean;
+  bCategoriaEditable: boolean;
   @ViewChild('file') mapElement: ElementRef;
 
   constructor(public navCtrl: NavController,
@@ -55,7 +55,7 @@ export class ElementosEditarPage {
 
     this.elemento = this.navParams.get('elemento');
     this.titulo = (this.elemento.id > 0 ? this.elemento.nombreElemento : 'Nuevo elemento');
-    this.bAlta = (this.elemento.id > 0 ? false : true);
+    this.bCategoriaEditable = (this.elemento.id > 0 ? false : true);
     this.fileToUpload = null;
   }
 

@@ -85,13 +85,10 @@ export class CategoriasDetallePage {
 buscarElementos(ev) {
   this.filtro_busqueda = ev.target.value || "";
   if (this.filtro_busqueda.length > 2) {
-    this.elementos = [];
     this.searching = true;
     this.getElementos(true, false);
   } else {
     this.searching = false;
-    this.elementos = [];
-    this.total = 0;
   }
 }
 
@@ -184,7 +181,8 @@ doInfinite(infiniteScroll) {
 
 openElemento(elemento: ElementoValoracionModel) {
   this.navCtrl.push(ElementosEditarPage, {
-    elemento: elemento
+    elemento: elemento,
+    params: {startSearching: true}
   });
 }
 

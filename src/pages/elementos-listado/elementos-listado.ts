@@ -80,13 +80,10 @@ export class ElementosListadoPage {
   buscarElementos(ev) {
     this.filtro_busqueda = ev.target.value || "";
     if (this.filtro_busqueda.length > 2) {
-      this.elementos = [];
       this.searching = true;
       this.getElementos(true, false);
     } else {
       this.searching = false;
-      this.elementos = [];
-      this.total = 0;
     }
   }
 
@@ -107,7 +104,6 @@ export class ElementosListadoPage {
                 this.total = 0;
               }
               this.searching = false;
-              debugger;
               this.elementos = this.elementos.concat(data.items);
               this.total = data.total;
               if (infiniteScroll != undefined && infiniteScroll != null) {

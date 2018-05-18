@@ -81,13 +81,10 @@ export class CategoriasListadoPage {
   buscarCategorias(ev) {
     this.filtro_busqueda = ev.target.value || "";
     if (this.filtro_busqueda.length > 2) {
-      this.categorias = [];
       this.searching = true;
       this.getCategorias(true, false);
     } else {
       this.searching = false;
-      this.categorias = [];
-      this.total = 0;
     }
   }
 
@@ -108,7 +105,6 @@ export class CategoriasListadoPage {
                 this.total = 0;
               }
               this.searching = false;
-              debugger;
               this.categorias = this.categorias.concat(data.items);
               this.total = data.total;
               if (infiniteScroll != undefined && infiniteScroll != null) {

@@ -35,7 +35,7 @@
     </ion-row>
     
     <form [formGroup]="elementoForm">
-      <ion-item *ngIf="bAlta">
+      <ion-item *ngIf="bMostrarCategoria">
         <ion-label stacked>Categoría</ion-label>
         <ion-select formControlName="categoriaSelect" cancelText="Cancelar" okText="Ok" [(ngModel)]="elemento.categoriaId">
           <ion-option *ngFor="let oCat of categoriasList" [value]="oCat.id">
@@ -43,7 +43,7 @@
           </ion-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="bAlta && !elementoForm.controls.categoriaSelect.valid  && (elementoForm.controls.categoriaSelect.dirty || submitAttempt)">
+      <ion-item *ngIf="bMostrarCategoria && !elementoForm.controls.categoriaSelect.valid  && (elementoForm.controls.categoriaSelect.dirty || submitAttempt)">
         <p class="message-error">Seleccione una categoría válida.</p>
       </ion-item>
       <ion-item>

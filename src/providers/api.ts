@@ -29,7 +29,7 @@ export class ApiService {
                         .then((data) => {
                             let listaElementos: ElementoValoracionModel[] = data.items;
                             if (_busqueda != undefined && _busqueda != null && _busqueda.trim().length > 0) {
-                                result = result.filter(f => f.nombreCategoria.indexOf(_busqueda) > 0);
+                                result = result.filter(f => f.nombreCategoria.indexOf(_busqueda) > -1);
                             }
                             let total = result.length;
                             if (start == undefined || start == null) {
@@ -44,7 +44,7 @@ export class ApiService {
                                 returnCollection.push(new CategoriaModel(
                                     item["id"],
                                     item["nombreCategoria"],
-                                    listaElementos.filter(f => f.categoriaId = item.id).length
+                                    listaElementos.filter(f => f.categoriaId == item.id).length
                                 ));
                             }
                             resolve(new PagingModel<CategoriaModel>(this.utilService.paginate(returnCollection, limit, start), total));
@@ -62,7 +62,7 @@ export class ApiService {
                 .then((data) => {
                     let result: any = data;
                     if (_categoriaId != undefined && _categoriaId != null && _categoriaId > 0) {
-                        result = result.filter(f => f.id = _categoriaId);
+                        result = result.filter(f => f.id == _categoriaId);
                     }
                     let returnItem: CategoriaModel;
                     for (let i = 0; i < result.length; ++i) {
@@ -160,10 +160,10 @@ export class ApiService {
                 .then((data) => {
                     let result: any = data;
                     if (_categoriaId != undefined && _categoriaId != null && _categoriaId > 0) {
-                        result = result.filter(f => f.categoriaId = _categoriaId);
+                        result = result.filter(f => f.categoriaId == _categoriaId);
                     }
                     if (_busqueda != undefined && _busqueda != null && _busqueda.trim().length > 0) {
-                        result = result.filter(f => f.nombreCategoria.indexOf(_busqueda) > 0);
+                        result = result.filter(f => f.nombreCategoria.indexOf(_busqueda) > -1);
                     }
                     let total = result.length;
                     if (start == undefined || start == null) {
@@ -199,7 +199,7 @@ export class ApiService {
                     let result: any = data;
 
                     if (_elementoId != undefined && _elementoId != null && _elementoId > 0) {
-                        result = result.filter(f => f.id = _elementoId);
+                        result = result.filter(f => f.id == _elementoId);
                     }
                     let returnItem: ElementoValoracionModel;
                     for (let i = 0; i < result.length; ++i) {
@@ -240,7 +240,7 @@ export class ApiService {
                     if (bAlta) {
                         currentData.items.push(_elemento);
                     } else {
-                        let el: ElementoValoracionModel = currentData.items.filter(f => f.id = _elemento.id)[0];
+                        let el: ElementoValoracionModel = currentData.items.filter(f => f.id == _elemento.id)[0];
                         el.nombreElemento = _elemento.nombreElemento;
                         el.imagen = _elemento.imagen;
                         el.valoracion = _elemento.valoracion;
@@ -315,10 +315,10 @@ export class ApiService {
     //             .then((data) => {
     //                 let result: any = data;
     //                 if (_categoriaId != undefined && _categoriaId != null && _categoriaId > 0) {
-    //                     result = result.filter(f => f.categoriaId = _categoriaId);
+    //                     result = result.filter(f => f.categoriaId == _categoriaId);
     //                 }
     //                 if (_elementoId != undefined && _elementoId != null && _elementoId > 0) {
-    //                     result = result.filter(f => f.elementoId = _elementoId);
+    //                     result = result.filter(f => f.elementoId == _elementoId);
     //                 }
     //                 let total = result.length;
     //                 if (start == undefined || start == null) {
@@ -353,7 +353,7 @@ export class ApiService {
     //             .then((data) => {
     //                 let result: any = data;
     //                 if (_valoracionId != undefined && _valoracionId != null && _valoracionId > 0) {
-    //                     result = result.filter(f => f.id = _valoracionId);
+    //                     result = result.filter(f => f.id == _valoracionId);
     //                 }
     //                 let returnItem: ValoracionModel;
     //                 for (let i = 0; i < result.length; ++i) {
